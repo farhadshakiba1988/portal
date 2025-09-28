@@ -2,11 +2,16 @@
 Dashboard URL Configuration
 """
 from django.urls import path
-from . import views
+from . import views, views_test
+from . import views_temp  # اضافه کنید
 
 app_name = 'dashboard'
 
 urlpatterns = [
+    path('test/v2/', views_test.test_dashboard_v2, name='test_v2'),
+    # تست
+    path('test/', views_temp.test_dashboard, name='test'),
+    path('api/test/', views_temp.api_test_connection, name='api_test'),
     # صفحات اصلی
     path('', views.index, name='index'),
     path('announcements/', views.announcements_list, name='announcements'),

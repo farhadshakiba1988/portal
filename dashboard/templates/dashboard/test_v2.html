@@ -1,0 +1,148 @@
+<!-- dashboard/templates/dashboard/test_v2.html -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تست SharePoint - V2</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status-ok { color: green; }
+        .status-error { color: red; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .column-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .column-item {
+            background: #e3f2fd;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 تست اتصال SharePoint - نسخه 2</h1>
+
+        <!-- وضعیت جداول -->
+        <h2>📊 وضعیت جداول:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>جدول</th>
+                    <th>وضعیت</th>
+                    <th>تعداد رکورد</th>
+                    <th>تعداد ستون</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for table_name, info in tables_status.items %}
+                <tr>
+                    <td><strong>{{ table_name }}</strong></td>
+                    <td>
+                        {% if info.accessible %}
+                            <span class="status-ok">✅ فعال</span>
+                        {% else %}
+                            <span class="status-error">❌ خطا</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ info.count|default:"-" }}</td>
+                    <td>{{ info.columns|length|default:"-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- AllLists -->
+        <h2>📋 جدول AllLists:</h2>
+        {% if lists.columns %}
+            <h3>ستون‌های موجود:</h3>
+            <div class="column-list">
+                {% for col in lists.columns %}
+                    <span class="column-item">{{ col }}</span>
+                {% endfor %}
+            </div>
+
+            <h3>نمونه داده ({{ lists.count }} رکورد):</h3>
+            <pre>{{ lists.data|slice:":3"|pprint }}</pre>
+        {% else %}
+            <p class="status-error">خطا: {{ lists.error }}</p>
+        {% endif %}
+
+        <!-- UserInfo -->
+        <h2>👥 جدول UserInfo:</h2>
+        {% if users.columns %}
+            <h3>ستون‌های مهم شناسایی شده:</h3>
+            <div class="column-list">
+                {% for col in users.important_columns %}
+                    <span class="column-item" style="background: #c8e6c9;">{{ col }}</span>
+                {% endfor %}
+            </div>
+
+            <h3>تمام ستون‌ها:</h3>
+            <div class="column-list">
+                {% for col in users.columns %}
+                    <span class="column-item">{{ col }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- AllUserData -->
+        <h2>📝 جدول AllUserData:</h2>
+        {% if userdata.columns %}
+            <h3>ستون‌های متنی:</h3>
+            <div class="column-list">
+                {% for col in userdata.text_columns %}
+                    <span class="column-item" style="background: #fff3e0;">{{ col }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <hr>
+        <h2>🎯 قدم بعدی:</h2>
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 5px;">
+            <p><strong>لطفاً اطلاعات بالا رو کپی کنید و به من بدید تا:</strong></p>
+            <ol>
+                <li>نام دقیق ستون‌ها رو شناسایی کنم</li>
+                <li>Query های صحیح رو بنویسم</li>
+                <li>سرویس‌های نهایی رو آماده کنم</li>
+            </ol>
+            <p>مخصوصاً <strong>نام ستون‌هایی که در AllLists و AllUserData</strong> می‌بینید خیلی مهم هستند!</p>
+        </div>
+    </div>
+</body>
+</html>

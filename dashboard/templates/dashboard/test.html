@@ -1,0 +1,83 @@
+<!-- dashboard/templates/dashboard/test.html -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تست اتصال SharePoint</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 تست اتصال به SharePoint</h1>
+
+        <h2>📊 آمار دیتابیس:</h2>
+        <ul>
+            <li>تعداد جداول: {{ stats.total_tables }}</li>
+            <li>حجم دیتابیس: {{ stats.database_size_mb }} MB</li>
+        </ul>
+
+        <h2>📋 جداول موجود:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>نام جدول</th>
+                    <th>نوع</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for table in tables %}
+                <tr>
+                    <td>{{ table.TABLE_NAME }}</td>
+                    <td>{{ table.TABLE_TYPE }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>📝 داده‌های تست:</h2>
+        <pre>{{ data|pprint }}</pre>
+
+        <h2>🔧 مرحله بعد:</h2>
+        <p>لطفاً خروجی بالا رو به من بدید تا query ها رو بر اساس ساختار دیتابیس شما تنظیم کنم.</p>
+    </div>
+</body>
+</html>
